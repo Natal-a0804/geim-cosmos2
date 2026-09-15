@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Яша: небо, море и космос · Приключения с папильоном Яшей</title>
+<style>
+  :root{--beige1:#FBF4E4;--beige2:#F0E2C4;--green:#2E7D32;--green2:#388E3C;--ink:#33502F;--line:#D9CDA9}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;color:var(--ink);
+       background:linear-gradient(180deg,var(--beige1),var(--beige2));min-height:100vh;overflow-x:hidden;transition:background .5s}
+  body.bg2{background:linear-gradient(180deg,#FDF7EA,#F3E7CB)}
+  body.bg3{background:linear-gradient(180deg,#F7F4E7,#E9EFDA)}
+  body.bg4{background:linear-gradient(180deg,#F4F8EC,#E4EFD8)}
+  body.bg5{background:linear-gradient(180deg,#FFF8E7,#FCE9C6)}
+  .screen{display:none;min-height:100vh;padding:12px 14px 22px;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px}
+  .screen.on{display:flex}
+  .wrap{margin:auto 0;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+  h1{font-size:clamp(24px,4.6vw,44px);color:var(--green2);text-align:center;margin:4px 0 2px;text-shadow:1px 1px 0 #fff;line-height:1.15}
+  h2{font-size:clamp(18px,3.4vw,30px);color:var(--green);text-align:center;margin:2px 0 0;line-height:1.2}
+  .sub{font-size:clamp(13px,2vw,17px);color:#5c6b4f;text-align:center;margin:0}
+  .sub.big{font-size:clamp(18px,3vw,27px);color:var(--green);font-weight:800;line-height:1.2;text-shadow:1px 1px 0 #fff}
+  .logo{height:clamp(140px,22vw,240px)}
+  .hero{width:min(680px,88vw);border-radius:20px;box-shadow:0 10px 26px rgba(90,80,40,.18);background:#fff}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:clamp(16px,2.6vw,23px);font-weight:700;
+       padding:14px 26px;min-height:56px;border-radius:999px;cursor:pointer;background:#fff;color:var(--green);
+       border:4px solid var(--green);box-shadow:0 5px 0 #A5D6A7;transition:transform .08s,box-shadow .08s;user-select:none;text-align:center}
+  .btn:active{transform:translateY(3px);box-shadow:0 2px 0 #A5D6A7}
+  .btn.small{font-size:clamp(14px,2.1vw,18px);padding:11px 20px;min-height:48px;border-width:3px}
+  .btn.ghost{border-color:#B9C7A8;color:#5c6b4f;box-shadow:0 5px 0 #DCE3CE}
+  .row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .prog{width:min(940px,100%);display:flex;align-items:center;gap:10px;font-weight:700;color:#6b7a5a;font-size:clamp(12px,1.9vw,15px)}
+  .bar{flex:1;height:10px;background:#E6DCC2;border-radius:99px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0%;background:var(--green);border-radius:99px;transition:width .35s}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:940px;justify-items:center}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:940px;justify-items:center}
+  .grid4 .pick img{height:clamp(58px,10vw,100px)}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:760px;justify-items:center}
+  .pick{background:#fff;border:4px solid #E4DCC6;border-radius:20px;padding:10px;cursor:pointer;display:flex;flex-direction:column;
+        align-items:center;justify-content:center;gap:6px;transition:transform .1s,border-color .15s;min-height:104px;width:100%}
+  .pick img{width:100%;height:clamp(74px,13vw,130px);object-fit:contain;border-radius:12px}
+  .pick .cap{font-size:clamp(12px,1.9vw,17px);font-weight:700;color:var(--green)}
+  .pick:hover{border-color:#C7D6B4}
+  .pick.ok{border-color:var(--green);box-shadow:0 0 0 5px rgba(46,125,50,.15)}
+  .pick.no{border-color:#E57373;opacity:.6}
+  .proffig{height:clamp(130px,24vw,260px);object-fit:contain;border-radius:16px}
+  .proffig.sm{height:clamp(104px,19vw,210px)}
+  .task{background:#fff;border:3px solid #E4DCC6;border-radius:16px;padding:10px 16px;font-size:clamp(15px,2.5vw,23px);
+        font-weight:700;color:var(--green);text-align:center;max-width:min(820px,94%);line-height:1.3}
+  .mrow{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;max-width:min(820px,96%)}
+  .mrow img{height:clamp(40px,6.4vw,68px);border-radius:10px}
+  .mrow img.faded{opacity:.22;filter:grayscale(1)}
+  .example{font-size:clamp(20px,3.6vw,34px);font-weight:900;color:#D32F2F;letter-spacing:.04em}
+  .round{width:clamp(64px,12vw,110px);height:clamp(64px,12vw,110px);border-radius:50%;object-fit:cover;object-position:center 22%;
+         border:4px solid #A5D6A7;background:#fff;box-shadow:0 4px 12px rgba(90,80,40,.15);flex:0 0 auto}
+  video{width:min(880px,100%);border-radius:18px;background:#000;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+  .bubble{background:#fff;border:3px solid #E4DCC6;border-radius:18px;padding:12px 16px;font-size:clamp(16px,2.6vw,24px);max-width:min(780px,92%);text-align:center}
+  .hintbox{background:#FFFDF5;border:2px dashed #CBBE96;border-radius:16px;padding:10px 14px;font-size:clamp(13px,2vw,18px);color:#6b5f3f;text-align:center;max-width:min(780px,92%)}
+  .timer{width:min(760px,92%);height:12px;background:#E6DCC2;border-radius:99px;overflow:hidden}
+  .timer i{display:block;height:100%;width:100%;background:#F0A62E;border-radius:99px}
+  .wordbox{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:64px;align-items:center}
+  .slotbox{display:flex;gap:6px;align-items:flex-end;font-size:clamp(24px,5vw,54px);font-weight:900;color:var(--green);min-height:60px}
+  .syl{background:#fff;border:4px solid #E4DCC6;border-radius:18px;padding:10px 20px;font-size:clamp(20px,4vw,40px);font-weight:900;cursor:pointer;user-select:none}
+  .syl:hover{border-color:#C7D6B4}
+  .syl.used{visibility:hidden}
+  .vowel{color:#D32F2F}   /* гласные — красные */
+  .cons{color:#1565C0}    /* согласные — синие */
+  .num{font-size:clamp(24px,4.4vw,44px)}
+  .shake{animation:sh .4s}@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .pop{animation:pp .45s}@keyframes pp{0%{transform:scale(.85)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+  .hidden{display:none !important}
+  .star{font-size:clamp(28px,6vw,54px)}
+  .proverb{font-size:clamp(18px,3.4vw,32px);color:var(--green);font-weight:800;text-align:center;line-height:1.25}
+  @media (max-width:640px){
+    .screen{padding:8px 8px 12px;gap:5px}
+    h1{font-size:clamp(20px,6.4vw,30px)}h2{font-size:clamp(16px,4.6vw,23px)}
+    .sub{font-size:11.5px}.sub.big{font-size:clamp(17px,5vw,24px)}
+    .logo{height:clamp(96px,24vw,150px)}
+    .proffig{height:min(34vh,280px)}
+    .pick img{height:min(20vh,150px)}
+    .pick.compact img{height:min(15vh,110px)}
+    .round{width:clamp(54px,15vw,86px);height:clamp(54px,15vw,86px)}
+    .syl{padding:8px 14px;font-size:clamp(18px,6vw,32px)}
+    .slotbox{font-size:clamp(22px,7vw,42px)}
+    .btn{min-height:50px;padding:11px 16px;font-size:clamp(15px,4.2vw,19px)}
+    .btn.small{min-height:46px;font-size:clamp(14px,3.8vw,17px)}
+    .grid4{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- Э0 старт -->
+<section class="screen on" id="sStart">
+  <div class="wrap">
+    <img class="logo" src="images/logo.png" alt="Яша">
+    <img class="hero pop" src="images/zastavka_troe2.jpg" alt="все трое">
+    <h1>Яша: небо, море и космос</h1>
+    <p class="sub">Новые профессии · 5–7 лет · 12–14 минут</p>
+    <div class="btn" id="btnStart">▶ Играть!</div>
+  </div>
+</section>
+
+<!-- Э1 приветствие -->
+<section class="screen" id="sHello">
+  <div class="wrap">
+    <div class="prog"><span>Этап 1 из 5</span><span class="bar"><i id="p1"></i></span></div>
+    <h2>Познакомимся?</h2>
+    <img class="hero" src="images/zastavka_troe2.jpg" alt="все трое">
+    <p class="sub big">Яша · Наташа · Баловашка</p>
+  </div>
+</section>
+
+<!-- Э2 видео -->
+<section class="screen" id="sVideo">
+  <div class="wrap">
+    <video id="vidStart" playsinline preload="metadata" src="video/troe_kosmos.mp4"></video>
+    <div id="videoFallback" class="row hidden"><div class="btn" id="btnVideo">▶ Смотреть</div></div>
+  </div>
+</section>
+
+<!-- Э3 загадка -->
+<section class="screen" id="sRiddle">
+  <div class="wrap">
+    <div class="prog"><span>Этап 1 из 5 · Загадка</span><span class="bar"><i id="p3"></i></span></div>
+    <h2>Отгадай загадку!</h2>
+    <div class="grid3" id="riddleGrid"></div>
+    <div class="row hidden" id="riddleNextRow"><div class="btn" id="btnRiddleNext">Дальше ➡</div></div>
+  </div>
+</section>
+
+<!-- Э4 слоги -->
+<section class="screen" id="sSyl">
+  <div class="wrap">
+    <div class="prog"><span id="sylProg">Задание 1 из 3</span><span class="bar"><i id="p4"></i></span></div>
+    <h2>Собери слово по слогам</h2>
+    <img class="proffig" id="sylImg" src="images/kosmonavt.jpg" alt="">
+    <div class="slotbox" id="sylSlots"></div>
+    <div class="wordbox" id="sylTiles"></div>
+    <div class="hintbox hidden" id="sylHint"></div>
+    <div class="row hidden" id="sylNextRow"><div class="btn" id="btnSylNext">Дальше ➡</div></div>
+  </div>
+</section>
+
+<!-- Э5 задачки -->
+<section class="screen" id="sMath">
+  <div class="wrap">
+    <div class="prog"><span id="mathProg">Задачка 1 из 3</span><span class="bar"><i id="p5"></i></span></div>
+    <h2>Задачки до 10</h2>
+    <div class="task" id="mathTask"></div>
+    <div class="mrow" id="mathRow"></div>
+    <div class="proffig hidden" id="mathExampleWrap"><img class="proffig" id="mathImg" src="images/pred_rakushka.jpg" alt="" style="height:clamp(70px,11vw,120px)"></div>
+    <div class="example hidden" id="mathExample"></div>
+    <div class="grid3" id="mathGrid"></div>
+    <div class="hintbox hidden" id="mathHint"></div>
+    <div class="row hidden" id="mathNextRow"><div class="btn" id="btnMathNext">Дальше ➡</div></div>
+  </div>
+</section>
+
+<!-- Э6 что не так -->
+<section class="screen" id="sWrong">
+  <div class="wrap">
+    <div class="prog"><span id="wrongProg">Задание 1 из 3</span><span class="bar"><i id="p6"></i></span></div>
+    <h2>Что не так?</h2>
+    <img class="proffig" id="wrongProf" src="images/letchik.jpg" alt="">
+    <p class="sub big">Найди лишний предмет</p>
+    <div class="grid3" id="wrongGrid"></div>
+    <div class="hintbox hidden" id="wrongHint"></div>
+    <div class="row hidden" id="wrongNextRow"><div class="btn" id="btnWrongNext">Дальше ➡</div></div>
+  </div>
+</section>
+
+<!-- Э7 кто где работает -->
+<section class="screen" id="sPlace">
+  <div class="wrap">
+    <div class="prog"><span id="placeProg">Задание 1 из 4</span><span class="bar"><i id="p7"></i></span></div>
+    <h2>Кто где работает?</h2>
+    <img class="proffig" id="placeProf" src="images/kosmonavt.jpg" alt="">
+    <div class="grid4" id="placeGrid"></div>
+    <div class="row"><video id="vidConfirm" class="hidden" playsinline preload="metadata" style="max-width:min(520px,80%)"></video></div>
+    <div class="hintbox hidden" id="placeHint"></div>
+    <div class="row hidden" id="placeNextRow"><div class="btn" id="btnPlaceNext">Дальше ➡</div></div>
+  </div>
+</section>
+
+<!-- Э8 скороговорка -->
+<section class="screen" id="sTongue">
+  <div class="wrap">
+    <div class="prog"><span>Этап 5 из 5 · Разминка</span><span class="bar"><i id="p8"></i></span></div>
+    <div class="sub big" style="font-size:clamp(22px,4.6vw,42px)">Лётчик летит над морем</div>
+    <img src="images/mesto_nebo.jpg" class="proffig" alt="небо">
+    <div class="row">
+      <div class="btn ghost small" id="btnTongueAgain">🔊 Послушать ещё</div>
+      <div class="btn small" id="btnTongueNext">Дальше ➡</div>
+    </div>
+  </div>
+</section>
+
+<!-- Э9 финал -->
+<section class="screen" id="sFinal">
+  <div class="wrap">
+    <div class="prog"><span>Готово!</span><span class="bar"><i id="p9"></i></span></div>
+    <div class="star" id="finalStars">⭐⭐⭐⭐⭐</div>
+    <h1>Яша гордится тобой!</h1>
+    <img src="images/yasha_moryak.jpg" class="proffig" alt="Яша">
+    <div class="proverb" id="proverbText">Кто любит трудиться, тому без дела не сидится</div>
+    <div class="row hidden" id="finalAgainRow"><div class="btn" id="btnAgain">🔁 Сыграть ещё раз</div></div>
+  </div>
+</section>
+
+<audio id="voice" preload="auto"></audio>
+
+<script>
+(function(){
+  "use strict";
+  var S = { voice: document.getElementById('voice') };
+
+  /* ── похвалы / подсказки / вопросы — «мешочки» без повторов ── */
+  var PRAISE = ['pohvala/p01','pohvala/p02','pohvala/p03','pohvala/p04','pohvala/p05','pohvala/p06','pohvala/p07','pohvala/p08','pohvala/p09','pohvala/p10',
+    'pohvala/молодец_1','pohvala/молодец_2','pohvala/молодец_3','pohvala/точно_1','pohvala/точно_2','pohvala/умница_1','pohvala/умница_2','pohvala/гениально','pohvala/верно','pohvala/правильно'];
+  var AGAIN  = ['podymai/e01','podymai/e02','podymai/e03','podymai/e04','podymai/e05','podymai/e06','podymai/e07','podymai/e08',
+    'podymai/почти_1','podymai/почти_2','podymai/почти_3','podymai/не_точно_1','podymai/не_точно_2','podymai/попробуй_еще_1'];
+  function bag(list){
+    var pool = list.slice(), last = null;
+    return function(){
+      if (Math.random() < .25) pool.sort(function(){ return Math.random() - .5; });
+      if (!pool.length){ pool = list.slice(); if (pool.length > 1 && pool[0] === last) pool.push(pool.shift()); }
+      var v = pool.shift();
+      if (v === last && pool.length){ var t = pool[0]; pool[0] = v; v = t; }
+      last = v; return v;
+    };
+  }
+  var nextPraise = bag(PRAISE), nextAgain = bag(AGAIN);
+
+  function show(id, bg){
+    var list = document.querySelectorAll('.screen');
+    for (var i=0;i<list.length;i++) list[i].classList.remove('on');
+    document.getElementById(id).classList.add('on');
+    document.body.className = bg ? ('bg' + bg) : '';
+    window.scrollTo(0,0);
+  }
+  function say(file, after){
+    if (!file){ if (after) setTimeout(after, 150); return; }
+    try{
+      S.voice.pause(); S.voice.currentTime = 0; S.voice.onended = null;
+      S.voice.src = (file.indexOf('/') >= 0 ? file : 'sounds/' + file) + '.mp3';
+      S.voice.onended = function(){ if (after) after(); };
+      var p = S.voice.play();
+      if (p && p.catch) p.catch(function(){ setTimeout(function(){ if (after) after(); }, 300); });
+    } catch(e){ if (after) after(); }
+  }
+  function stopVoice(){ try{ S.voice.pause(); S.voice.currentTime = 0; S.voice.onended = null; }catch(e){} }
+  function praise(after){ say(nextPraise(), after); }
+  function oops(after){ say(nextAgain(), after); }
+  function progress(el, pct){ el.style.width = Math.max(4, Math.min(100, Math.round(pct))) + '%'; }
+  function playVideo(v, onEnd, fb, btn){
+    try{ v.currentTime = 0; }catch(e){}
+    v.onended = function(){ if (onEnd) onEnd(); };
+    var p = v.play();
+    if (p && p.catch) p.catch(function(){
+      if (fb){ fb.classList.remove('hidden'); v.classList.add('hidden');
+        if (btn) btn.onclick = function(){ fb.classList.add('hidden'); v.classList.remove('hidden'); v.play(); }; }
+    });
+  }
+
+  /* ═══ Э0 → Э1 ═══ */
+  document.getElementById('btnStart').addEventListener('click', function(){
+    show('sHello', 1); progress(document.getElementById('p1'), 10);
+    setTimeout(function(){ say('v01', function(){ setTimeout(startVideo, 350); }); }, 250);
+  });
+
+  /* ═══ Э2 видео ═══ */
+  function startVideo(){
+    stopVoice(); show('sVideo', 2);
+    var v = document.getElementById('vidStart');
+    try{ v.load(); }catch(e){}                         /* грузим только на этом экране */
+    setTimeout(function(){
+      playVideo(v, startRiddle, document.getElementById('videoFallback'), document.getElementById('btnVideo'));
+      say('v02');                                      /* фраза — сразу с началом видео */
+    }, 250);
+  }
+
+  /* ═══ Э3 загадка ═══ */
+  var RIDDLE = [
+    {img:'images/kosmonavt.jpg', cap:'космонавт', key:'kosmonavt'},
+    {img:'images/letchik.jpg',   cap:'лётчик',    key:'letchik'},
+    {img:'images/moryak.jpg',    cap:'моряк',     key:'moryak'}
+  ];
+  function startRiddle(){
+    stopVoice(); show('sRiddle', 2); progress(document.getElementById('p3'), 20);
+    say('v03');
+    var grid = document.getElementById('riddleGrid'); grid.innerHTML = '';
+    RIDDLE.forEach(function(r){
+      var d = document.createElement('div');
+      d.className = 'pick';
+      d.innerHTML = '<img src="' + r.img + '" alt=""><span class="cap">' + r.cap + '</span>';
+      d.addEventListener('click', function(){
+        if (r.key === 'kosmonavt'){
+          d.classList.add('ok');
+          var all = document.querySelectorAll('#riddleGrid .pick');
+          for (var i=0;i<all.length;i++) all[i].style.pointerEvents = 'none';
+          stopVoice();
+          praise(function(){ say('v03_1', function(){ document.getElementById('riddleNextRow').classList.remove('hidden'); }); });
+        } else { d.classList.add('no','shake'); stopVoice(); oops(); }
+      });
+      grid.appendChild(d);
+    });
+  }
+  document.getElementById('btnRiddleNext').addEventListener('click', function(){
+    stopVoice(); startSyllables();
+  });
+
+  /* ═══ Э4 слоги ═══ */
+  var SYL = [
+    {img:'images/kosmonavt.jpg', parts:['КОС','МО','НАВТ'], say:'v05', hint:'v06', expl:'v07', tip:'Слово начинается со слога КОС…'},
+    {img:'images/moryak.jpg',    parts:['МО','РЯК'],        say:'v08', hint:'v09', expl:'v10', tip:'Сначала слог МО…'},
+    {img:'images/letchik.jpg',   parts:['ЛЁТ','ЧИК'],       say:'v11', hint:'v12', expl:'v13', tip:'Начни со слога ЛЁТ…'},
+    {img:'images/inzhener_robotov.jpg', parts:['РО','БОТ'], say:'v39', hint:'', expl:'v42', tip:'Начни со слога РО…'}
+  ];
+  var si = 0, sylStep = 0, sylMiss = 0;
+
+  function startSyllables(){
+    stopVoice(); show('sSyl', 3); progress(document.getElementById('p4'), 30);
+    si = 0;
+    say('v04', function(){ setTimeout(sylRound, 400); });
+  }
+  function colorSyl(txt){
+    var v = 'АЕЁИОУЫЭЮЯ';
+    var out = '';
+    for (var i=0;i<txt.length;i++){
+      var ch = txt[i];
+      out += '<span class="' + (v.indexOf(ch) >= 0 ? 'vowel' : 'cons') + '">' + ch + '</span>';
+    }
+    return out;
+  }
+  function sylRound(){
+    var r = SYL[si]; sylStep = 0; sylMiss = 0;
+    document.getElementById('sylProg').textContent = 'Задание ' + (si+1) + ' из ' + SYL.length;
+    progress(document.getElementById('p4'), 30 + (si / SYL.length) * 15);
+    document.getElementById('sylImg').src = r.img;
+    document.getElementById('sylHint').classList.add('hidden');
+    document.getElementById('sylNextRow').classList.add('hidden');
+    document.getElementById('sylSlots').innerHTML = '';
+    var box = document.getElementById('sylTiles'); box.innerHTML = '';
+    var shuffled = r.parts.slice().sort(function(){ return Math.random() - .5; });
+    shuffled.forEach(function(p){
+      var d = document.createElement('div');
+      d.className = 'syl';
+      d.innerHTML = colorSyl(p);
+      d.addEventListener('click', function(){
+        if (d.dataset.used === '1') return;
+        if (p === r.parts[sylStep]){
+          d.dataset.used = '1'; d.classList.add('used');
+          var slot = document.createElement('span');
+          slot.innerHTML = colorSyl(p);
+          document.getElementById('sylSlots').appendChild(slot);
+          sylStep++;
+          if (sylStep === r.parts.length){
+            var all = document.querySelectorAll('#sylTiles .syl');
+            for (var i=0;i<all.length;i++) all[i].style.pointerEvents = 'none';
+            stopVoice();
+            setTimeout(function(){
+              praise(function(){
+                setTimeout(function(){
+                  stopVoice();
+                  say(r.expl, function(){ document.getElementById('sylNextRow').classList.remove('hidden'); });
+                }, 450);
+              });
+            }, 250);
+          }
+        } else {
+          d.classList.add('shake'); stopVoice(); oops(); sylMiss++;
+          var hb = document.getElementById('sylHint');
+          hb.textContent = '💡 ' + r.tip; hb.classList.remove('hidden');
+          if (sylMiss === 1 && r.hint) setTimeout(function(){ say(r.hint); }, 1400);
+          if (sylMiss >= 3){ document.getElementById('btnSylNext').textContent = 'Пропустить ➡'; document.getElementById('sylNextRow').classList.remove('hidden'); }
+        }
+      });
+      box.appendChild(d);
+    });
+    setTimeout(function(){ say(r.say); }, 300);
+  }
+  document.getElementById('btnSylNext').addEventListener('click', function(){
+    stopVoice(); si++;
+    if (si < SYL.length){ sylRound(); } else { startMath(); }
+  });
+
+  /* ═══ Э5 задачки ═══ */
+  var MATH = [
+    {img:'images/pred_rakushka.jpg', item:'ракушки', say:'v15', expl:'v16', ans:4, opts:[3,4,5],
+     total:7, faded:3, example:'7 − 3 = 4',
+     task:'У моряка было 7 ракушек. 3 он подарил другу. Сколько осталось?', hint:'Семь минус три — сколько?'},
+    {img:'images/pred_zvezda.jpg', item:'звёзды', say:'v17', expl:'v18', ans:9, opts:[8,9,10],
+     total:9, group:4, example:'4 + 5 = 9',
+     task:'Космонавт увидел 4 звезды, а потом ещё 5. Сколько всего звёзд?', hint:'Четыре плюс пять — сколько?'},
+    {img:'images/pred_samoletik.jpg', item:'самолётики', say:'v19', expl:'v20', ans:4, opts:[3,4,5],
+     total:6, faded:2, example:'6 − 2 = 4',
+     task:'У лётчика было 6 бумажных самолётиков. 2 улетели. Сколько осталось?', hint:'Шесть минус два — сколько?'}
+  ];
+  var mi = 0, mathMiss = 0;
+  function startMath(){
+    stopVoice(); show('sMath', 3); progress(document.getElementById('p5'), 50);
+    mi = 0;
+    say('v14', function(){ setTimeout(mathRound, 400); });
+  }
+  function mathRound(){
+    var m = MATH[mi]; mathMiss = 0;
+    document.getElementById('mathProg').textContent = 'Задачка ' + (mi+1) + ' из ' + MATH.length;
+    progress(document.getElementById('p5'), 50 + (mi / MATH.length) * 15);
+    document.getElementById('mathImg').src = m.img;
+    document.getElementById('mathTask').textContent = m.task;
+    /* наглядно: картинки предметов (бледные = ушли/отдали) */
+    var row = document.getElementById('mathRow'); row.innerHTML = '';
+    var fadedIdx = {};
+    if (m.faded){
+      var idxs = []; for (var k=0;k<m.total;k++) idxs.push(k);
+      idxs.sort(function(){ return Math.random() - .5; });
+      for (var k2=0;k2<m.faded;k2++) fadedIdx[idxs[k2]] = 1;
+    }
+    for (var n2=0;n2<m.total;n2++){
+      var im = document.createElement('img');
+      im.src = m.img;
+      if (fadedIdx[n2]) im.className = 'faded';
+      if (m.group && n2 === m.group) im.style.marginLeft = '18px';
+      row.appendChild(im);
+    }
+    document.getElementById('mathExampleWrap').classList.add('hidden');
+    var ex = document.getElementById('mathExample'); ex.classList.add('hidden'); ex.textContent = '';
+    document.getElementById('mathHint').classList.add('hidden');
+    document.getElementById('mathNextRow').classList.add('hidden');
+    var grid = document.getElementById('mathGrid'); grid.innerHTML = '';
+    m.opts.forEach(function(n){
+      var d = document.createElement('div');
+      d.className = 'pick';
+      d.innerHTML = '<span class="num">' + n + '</span>';
+      d.addEventListener('click', function(){
+        if (n === m.ans){
+          d.classList.add('ok','pop');
+          var all = document.querySelectorAll('#mathGrid .pick');
+          for (var i=0;i<all.length;i++) all[i].style.pointerEvents = 'none';
+          stopVoice();
+          praise(function(){
+            setTimeout(function(){
+              var ex = document.getElementById('mathExample');
+              ex.textContent = m.example; ex.classList.remove('hidden');
+              say(m.expl, function(){ document.getElementById('mathNextRow').classList.remove('hidden'); });
+            }, 400);
+          });
+        } else {
+          d.classList.add('no','shake'); stopVoice(); oops(); mathMiss++;
+          var hb = document.getElementById('mathHint'); hb.textContent = '💡 ' + m.hint; hb.classList.remove('hidden');
+          if (mathMiss >= 3){ document.getElementById('btnMathNext').textContent = 'Пропустить ➡'; document.getElementById('mathNextRow').classList.remove('hidden'); }
+        }
+      });
+      grid.appendChild(d);
+    });
+    setTimeout(function(){ say(m.say); }, 300);
+  }
+  document.getElementById('btnMathNext').addEventListener('click', function(){
+    stopVoice(); mi++;
+    if (mi < MATH.length){ mathRound(); } else { startWrong(); }
+  });
+
+  /* ═══ Э6 «Что не так?» ═══ */
+  var WRONG = [
+    {prof:'images/letchik.jpg',   say:'v22', expl:'v23', extra:'pred_lasty',    ok:['pred_shlem_kosmos','pred_samoletik'], hint:'Ласты нужны тому, кто плавает…'},
+    {prof:'images/kosmonavt.jpg', say:'v24', expl:'v25', extra:'pred_valenki',  ok:['pred_skafandr','pred_shlem_kosmos'],  hint:'В чём выходят в космос?'},
+    {prof:'images/moryak.jpg',    say:'v26', expl:'v27', extra:'pred_shlem_kosmos', ok:['pred_furagka','pred_krug'],       hint:'Что носят моряки на голове?'},
+    {prof:'images/inzhener_robotov.jpg', say:'v40', expl:'v41', extra:'pred_krug', ok:['pred_robot','pred_samoletik'], hint:'Кому нужен спасательный круг?'}
+  ];
+  var PRED_CAP = {pred_lasty:'ласты', pred_shlem_kosmos:'шлем', pred_samoletik:'самолётик',
+                  pred_valenki:'валенки', pred_skafandr:'скафандр', pred_furagka:'фуражка',
+                  pred_krug:'спасательный круг'};
+  var wi = 0, wrongMiss = 0;
+  function startWrong(){
+    stopVoice(); show('sWrong', 4); progress(document.getElementById('p6'), 66);
+    wi = 0;
+    say('v21', function(){ setTimeout(wrongRound, 400); });
+  }
+  function wrongRound(){
+    var w = WRONG[wi]; wrongMiss = 0;
+    document.getElementById('wrongProg').textContent = 'Задание ' + (wi+1) + ' из ' + WRONG.length;
+    progress(document.getElementById('p6'), 66 + (wi / WRONG.length) * 12);
+    document.getElementById('wrongProf').src = w.prof;
+    document.getElementById('wrongHint').classList.add('hidden');
+    document.getElementById('wrongNextRow').classList.add('hidden');
+    var items = [w.extra].concat(w.ok).sort(function(){ return Math.random() - .5; });
+    var grid = document.getElementById('wrongGrid'); grid.innerHTML = '';
+    items.forEach(function(name){
+      var d = document.createElement('div');
+      d.className = 'pick';
+      d.innerHTML = '<img src="images/' + name + '.jpg" alt=""><span class="cap">' + (PRED_CAP[name] || '') + '</span>';
+      d.addEventListener('click', function(){
+        if (name === w.extra){
+          d.classList.add('ok','pop');
+          var all = document.querySelectorAll('#wrongGrid .pick');
+          for (var i=0;i<all.length;i++) all[i].style.pointerEvents = 'none';
+          stopVoice();
+          praise(function(){ say(w.expl, function(){ document.getElementById('wrongNextRow').classList.remove('hidden'); }); });
+        } else {
+          d.classList.add('no','shake'); stopVoice(); oops(); wrongMiss++;
+          var hb = document.getElementById('wrongHint'); hb.textContent = '💡 ' + w.hint; hb.classList.remove('hidden');
+          if (wrongMiss >= 3){ document.getElementById('btnWrongNext').textContent = 'Пропустить ➡'; document.getElementById('wrongNextRow').classList.remove('hidden'); }
+        }
+      });
+      grid.appendChild(d);
+    });
+    setTimeout(function(){ say(w.say); }, 300);
+  }
+  document.getElementById('btnWrongNext').addEventListener('click', function(){
+    stopVoice(); wi++;
+    if (wi < WRONG.length){ wrongRound(); } else { startPlace(); }
+  });
+
+  /* ═══ Э7 «Кто где работает?» ═══ */
+  var PLACE = [
+    {prof:'images/kosmonavt.jpg',         say:'v29', ans:'kosmos',        video:'video/troe_kosmos.mp4',  hint:'Космонавт летает среди звёзд…'},
+    {prof:'images/moryak.jpg',            say:'v30', ans:'more',          video:'video/troe_korabl.mp4',  hint:'Моряк ходит по морям…'},
+    {prof:'images/letchik.jpg',           say:'v31', ans:'nebo',          video:'video/troe_aeroport.mp4',hint:'Лётчик поднимается в небо…'},
+    {prof:'images/inzhener_robotov.jpg',  say:'v32', ans:'masterskaya',   video:'video/yasha_i_robot.mp4',hint:'Роботов собирают в мастерской…'}
+  ];
+  var PLACES = [{key:'nebo',img:'images/mesto_nebo.jpg',cap:'небо'},
+                {key:'more',img:'images/mesto_more.jpg',cap:'море'},
+                {key:'kosmos',img:'images/mesto_kosmos.jpg',cap:'космос'},
+                {key:'masterskaya',img:'images/mesto_masterskaya.jpg',cap:'мастерская'}];
+  var pi = 0, placeMiss = 0;
+  function startPlace(){
+    stopVoice(); show('sPlace', 4); progress(document.getElementById('p7'), 80);
+    pi = 0;
+    say('v28', function(){ setTimeout(placeRound, 400); });
+  }
+  function placeRound(){
+    var p = PLACE[pi]; placeMiss = 0;
+    document.getElementById('placeProg').textContent = 'Задание ' + (pi+1) + ' из ' + PLACE.length;
+    progress(document.getElementById('p7'), 80 + (pi / PLACE.length) * 10);
+    document.getElementById('placeProf').src = p.prof;
+    document.getElementById('placeHint').classList.add('hidden');
+    document.getElementById('placeNextRow').classList.add('hidden');
+    var v = document.getElementById('vidConfirm'); v.classList.add('hidden'); v.pause();
+    var grid = document.getElementById('placeGrid'); grid.innerHTML = '';
+    PLACES.forEach(function(pl){
+      var d = document.createElement('div');
+      d.className = 'pick';
+      d.innerHTML = '<img src="' + pl.img + '" alt=""><span class="cap">' + pl.cap + '</span>';
+      d.addEventListener('click', function(){
+        if (pl.key === p.ans){
+          d.classList.add('ok','pop');
+          var all = document.querySelectorAll('#placeGrid .pick');
+          for (var i=0;i<all.length;i++) all[i].style.pointerEvents = 'none';
+          stopVoice();
+          praise(function(){
+            setTimeout(function(){
+              var vv = document.getElementById('vidConfirm');
+              vv.src = p.video; vv.classList.remove('hidden');
+              playVideo(vv, null, null, null);
+              document.getElementById('placeNextRow').classList.remove('hidden');
+              setTimeout(function(){ say('v33'); }, 400);
+            }, 500);
+          });
+        } else {
+          d.classList.add('no','shake'); stopVoice(); oops(); placeMiss++;
+          var hb = document.getElementById('placeHint'); hb.textContent = '💡 ' + p.hint; hb.classList.remove('hidden');
+          if (placeMiss >= 3){ document.getElementById('btnPlaceNext').textContent = 'Пропустить ➡'; document.getElementById('placeNextRow').classList.remove('hidden'); }
+        }
+      });
+      grid.appendChild(d);
+    });
+    setTimeout(function(){ say(p.say); }, 300);
+  }
+  document.getElementById('btnPlaceNext').addEventListener('click', function(){
+    stopVoice(); pi++;
+    if (pi < PLACE.length){ placeRound(); } else { startTongue(); }
+  });
+
+  /* ═══ Э8 скороговорка ═══ */
+  function startTongue(){
+    stopVoice(); show('sTongue', 4); progress(document.getElementById('p8'), 94);
+    say('v34');
+  }
+  document.getElementById('btnTongueAgain').addEventListener('click', function(){ say('v34'); });
+  document.getElementById('btnTongueNext').addEventListener('click', function(){ finish(); });
+
+  /* ═══ Э9 финал ═══ */
+  function finish(){
+    stopVoice(); show('sFinal', 5); progress(document.getElementById('p9'), 100);
+    say('v35', function(){
+      setTimeout(function(){
+        say('v36', function(){
+          say('v37', function(){
+            document.getElementById('finalAgainRow').classList.remove('hidden');
+            say('v38');
+          });
+        });
+      }, 300);
+    });
+  }
+  document.getElementById('btnAgain').addEventListener('click', function(){ stopVoice(); location.reload(); });
+
+  /* предзагрузка видео — только когда дошёл до экрана (не на старте) */
+})();
+</script>
+</body>
+</html>
